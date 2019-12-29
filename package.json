@@ -19,7 +19,9 @@
   "homepage": "https://github.com/tharindusenadeera/cinnamon#readme",
   "dependencies": {
     "db-migrate": "^0.11.6",
-    "express": "^4.17.1"
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "mysql": "^2.17.1"
   },
   "devDependencies": {
     "nodemon": "^2.0.2"
