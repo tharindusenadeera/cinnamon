@@ -17,5 +17,15 @@ module.exports = {
                 return callback(null, res);
             }
         });
+    },
+
+    getUserByEmail : (data, callback) => {
+        pool.query(`SELECT * FROM users WHERE email = ?`, data, (err, res) => {
+            if(err){
+                return callback(err);
+            } else {
+                return callback(null, res[0]);
+            }
+        });
     }
 }
