@@ -1,4 +1,4 @@
-const { create, getUserByEmail, getUserById, updateUser, getUsers, deleteUser } = require('../user/service');
+const { create, getUserByEmail, getUserById, updateUser, getUsers, deleteUser, signUp } = require('../user/service');
 const { genSaltSync, hashSync, compareSync } = require('bcrypt');
 const { sign } = require("jsonwebtoken");
 const dotenv  = require('dotenv');
@@ -60,6 +60,33 @@ module.exports = {
             }
         })
     },
+
+    userSignup : (req, res) => {
+        const body = req.body;
+        const salt = genSaltSync(10);
+        body.password = hashSync(body.password, salt);
+        signUp(body, (err, result) => {
+            if(err) {
+                return res.status(500).json({
+                    error: true,
+                    message: "Database Connection Error !"
+                })
+            } else {
+                if(result){
+                    const jsonToken = sign({ result: result}, process.env.PRIVATE_KEY, {
+                        expiresIn: "1h"
+                    });
+
+                    return res.status(200).json({
+                        error: false,
+                        message: "Successfully Signed up !",
+                        token: jsonToken
+                    });
+                }
+            }
+        })
+
+    }, 
 
     getUserById : (req, res) => {
         const id = req.params.id;

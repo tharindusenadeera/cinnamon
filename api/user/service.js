@@ -19,6 +19,21 @@ module.exports = {
         });
     },
 
+    signUp: (data, callback) => {
+        const user = {
+            first_name: data.first_name,
+            email: data.email,
+            password: data.password
+        }
+        pool.query(`INSERT INTO users SET ?`, user, (err, res) => {
+            if(err){
+                return callback(err);
+            } else {
+                return callback(null, res);
+            }
+        });
+    }, 
+
     getUserByEmail : (data, callback) => {
         pool.query(`SELECT * FROM users WHERE email = ?`, data, (err, res) => {
             if(err){
