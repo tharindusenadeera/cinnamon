@@ -1,4 +1,4 @@
-const { create, getUserByEmail } = require('../user/service');
+const { create, getUserByEmail, getUserById, updateUser, getUsers, deleteUser } = require('../user/service');
 const { genSaltSync, hashSync, compareSync } = require('bcrypt');
 const { sign } = require("jsonwebtoken");
 const dotenv  = require('dotenv');
@@ -57,6 +57,84 @@ module.exports = {
                         message: "Invalid username or password !"
                     })
                 }
+            }
+        })
+    },
+
+    getUserById : (req, res) => {
+        const id = req.params.id;
+        getUserById(id, (err, result) => {
+            if(err){
+                return res.status(500).json({
+                    error: true,
+                    message: "Database Connection Error !"
+                });
+            } else if (!result){
+                return res.status(400).json({
+                    error: true,
+                    message: ""
+                });
+            } else {
+                return res.status(200).json({
+                    error: false,
+                    message: result
+                });
+            }
+        })
+    },
+
+    updateUserById: (req, res) => {
+        const id = req.params.id;
+        const body = req.body;
+        updateUser(body, id, (err, result) => {
+            if(err){              
+                return res.status(500).json({
+                    error: true,
+                    message: "Databse Connection Error !"
+                })
+            } else {
+                return res.status(200).json({
+                    error: false,
+                    message: "Successfully Updated !"
+                })
+            }
+        })
+    }, 
+
+    getUsers: (req, res) => {
+        getUsers((err, result) => {
+            if(err) {
+                return res.status(500).json({
+                    error: true,
+                    message: "Database Connection Error !"
+                })
+            } else if (!result) {
+                return res.status(400).json({
+                    error: true,
+                    message: "No users found !"
+                })
+            } else {
+                return res.status(200).json({
+                    error: false,
+                    message: result
+                })
+            }
+        })
+    },
+
+    deleteUserById: (req, res) => {
+        const id = req.params.id;
+        deleteUser(id, (err, result) => {
+            if(err){
+                return res.status(500).json({
+                    error: true,
+                    message: "Database Connection Error !"
+                })
+            } else {
+                return res.status(200).json({
+                    error: false,
+                    message: "Deleted Successfully !"
+                })
             }
         })
     }

@@ -27,5 +27,45 @@ module.exports = {
                 return callback(null, res[0]);
             }
         });
+    },
+
+    getUserById : ( data, callback) => {
+        pool.query(`SELECT * FROM users WHERE id = ?`, data, (err, res) => {
+            if(err){
+                return callback(err);
+            } else {
+                return callback(null, res[0])
+            }
+        })
+    },
+
+    getUsers : (callback) => {
+        pool.query(`SELECT * FROM users`, (err, res) => {
+            if(err){
+                return callback(err);
+            } else {
+                return callback(null, res)
+            }
+        })
+    },
+
+    updateUser : (data, id, callback) => {
+        pool.query(`UPDATE users SET ? where id = ?`, [data, id], (err, res) => {
+            if(err){
+                return callback(err);
+            } else {
+                return callback(null, res[0])
+            }
+        })
+    },
+
+    deleteUser : (data, callback) => {
+        pool.query(`DELETE FROM users where id = ?`, data, (err, res) => {
+            if(err){
+                return callback(err);
+            } else {
+                return callback(null, res);
+            }
+        })
     }
 }
