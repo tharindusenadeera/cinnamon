@@ -1,7 +1,9 @@
 const { checkToken } = require("../../auth/tokenValidation");
-const router = require('express').Router();
+const bookingRoutes = require('express').Router();
 const { getAllBookings, getBookingById } = require("../booking/controller");
 
 //Booking routes
-router.get('/bookings', checkToken, getAllBookings);
-router.get('/booking/:id', checkToken, getBookingById);
+bookingRoutes.get('/bookings', checkToken, getAllBookings);
+bookingRoutes.get('/booking/:id', checkToken, getBookingById);
+
+module.exports = bookingRoutes;
